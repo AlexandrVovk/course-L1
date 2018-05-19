@@ -6,4 +6,6 @@ echo Hello Docker!
 
 echo push from another VM
 
+echo pull from another VM
+
 exit 0
