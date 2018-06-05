@@ -2,41 +2,63 @@
 
 loop ()
 { 
+echo "OK, you are root."
 
+if [ -e /root/crack.txt ]
 
+	then rm /root/crack.txt
 
+fi
 
+	for i in `cat /etc/shadow`
 
+	do 
 
+		echo $i | egrep -v "\*|!" | awk -F":" '{print $1 ":" $2}' >> /root/crack.txt
 
-
-echo "this is function"
+	done
 }
 
+flag=0
 
-read -p "Do you want to look throught a file /etc/shadow ? [ Y / N ]: " question
+while [ $flag != 1 ]
 
-case "$question" in 
+do
+
+read -p "Do you want to use a file /etc/shadow ? [ Y / N ]: " question
+
+	case "$question" in 
 
 	y | Y) if [ `whoami` = root ]
 
 			then loop
+		
+				if [ -s /root/crack.txt ]
 
-			else	echo "You are not root, exit"; exit 0
+					then echo "Done. Look at that file /root/crack.txt"
+
+					else echo "File crack.txt doesn't exist. Exit" 
+	
+				fi
+
+				flag=1
+
+			else	echo "You are not root. Exit"; flag=1
 
 		fi 
 	;;
 
-	n | N) echo "Exit"; exit 0
+	n | N) echo "Exit"; flag=1
 
 	;;
 
-	*) echo "Something Exit"; exit 0
+	*) echo "You type something wrong. Try again" 
 
 	;;
 
-esac
+	esac
+
+done
+
 
 exit 0
-
-			
